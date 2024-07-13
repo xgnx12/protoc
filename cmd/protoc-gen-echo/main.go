@@ -70,7 +70,7 @@ func generateHandlerRouter(g *protogen.GeneratedFile, service *protogen.Service)
 		if !isValidHttpMethod(httpMethod) {
 			logError(fmt.Sprintf("`%s` is no valid http method", httpMethod))
 		}
-		g.P(`e.`, strings.ToUpper(httpMethod), `("`, camelToSnake(service.GoName), "/", camelToSnake(method.GoName), `", func(c echo.Context) error {`)
+		g.P(`e.`, strings.ToUpper(httpMethod), `("/`, camelToSnake(service.GoName), "/", camelToSnake(method.GoName), `", func(c echo.Context) error {`)
 		g.P("    req := new(", method.Input.GoIdent, ")")
 		g.P("    resp := new(", method.Output.GoIdent, ")")
 		g.P("    if err := c.Bind(req); err != nil {")
