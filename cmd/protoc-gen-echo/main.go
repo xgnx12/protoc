@@ -47,23 +47,15 @@ func generateFile(gen *protogen.Plugin, file *protogen.File) {
 
 	for _, service := range file.Services {
 		generateServiceInterface(g, service)
-		generateServiceStruct(g, service)
 		generateHandlerRouter(g, service)
 	}
 }
 
 func generateServiceInterface(g *protogen.GeneratedFile, service *protogen.Service) {
-	g.P("type ", service.GoName, "Server interface {")
+	g.P("type ", service.GoName, "Interface interface {")
 	for _, method := range service.Methods {
 		g.P(method.GoName, "(ctx context.Context, req *", method.Input.GoIdent, ") ", "(", method.Output.GoIdent, ",error)")
 	}
-	g.P("}")
-	g.P()
-}
-
-func generateServiceStruct(g *protogen.GeneratedFile, service *protogen.Service) {
-	g.P("type ", service.GoName, "Handlers struct {")
-	g.P("    Service ", service.GoName, "Server")
 	g.P("}")
 	g.P()
 }
