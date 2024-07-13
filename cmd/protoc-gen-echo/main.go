@@ -54,7 +54,7 @@ func generateFile(gen *protogen.Plugin, file *protogen.File) {
 func generateServiceInterface(g *protogen.GeneratedFile, service *protogen.Service) {
 	g.P("type ", service.GoName, "Interface interface {")
 	for _, method := range service.Methods {
-		g.P(method.GoName, "(ctx context.Context, req *", method.Input.GoIdent, ") ", "(", method.Output.GoIdent, ",error)")
+		g.P(method.GoName, "(ctx context.Context, req *", method.Input.GoIdent, ", resp *", method.Output.GoIdent, ")", " error")
 	}
 	g.P("}")
 	g.P()
@@ -72,11 +72,11 @@ func generateHandlerRouter(g *protogen.GeneratedFile, service *protogen.Service)
 		}
 		g.P(`e.`, strings.ToUpper(httpMethod), `("`, camelToSnake(service.GoName), "/", camelToSnake(method.GoName), `", func(c echo.Context) error {`)
 		g.P("    req := new(", method.Input.GoIdent, ")")
+		g.P("    resp := new(", method.Output.GoIdent, ")")
 		g.P("    if err := c.Bind(req); err != nil {")
 		g.P("       return err")
 		g.P("    }")
-		g.P("    resp, err := server.", method.GoName, "(c.Request().Context(), req)")
-		g.P("    if err != nil {")
+		g.P("    if err := server.", method.GoName, "(c.Request().Context(), req, resp); err != nil {")
 		g.P("   	 return err")
 		g.P("    }")
 		g.P("    return c.JSON(http.StatusOK, resp)")
