@@ -61,7 +61,7 @@ func generateServiceInterface(g *protogen.GeneratedFile, service *protogen.Servi
 }
 
 func generateHandlerRouter(g *protogen.GeneratedFile, service *protogen.Service) {
-	g.P("func Register", service.GoName, "(e *echo.Echo, server ", service.GoName, "Interface) {")
+	g.P("func Register", service.GoName, "(e *echo.Group, server ", service.GoName, "Interface) {")
 	for _, method := range service.Methods {
 		httpMethod := proto.GetExtension(method.Desc.Options(), protos.E_HttpMethod).(string)
 		if httpMethod == "" {
