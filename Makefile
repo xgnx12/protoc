@@ -13,6 +13,7 @@ build-echo-plugin:
 	go build -o $(PROTOC_GEN_ECHO_PATH) ${PROTOC_GEN_ECHO_SRC_PATH}
 
 build-pb:
+	protoc -I=protos --plugin=protoc-gen-go=${PROTOC_GEN_GO_PATH} --go_out=protos --go_opt=paths=source_relative ./protos/google/protobuf/descriptor.proto 
 	protoc -I=protos --plugin=protoc-gen-go=${PROTOC_GEN_GO_PATH} --go_out=protos --go_opt=paths=source_relative protos/http_options.proto
 
 # 使用插件生成代码的目标
