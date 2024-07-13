@@ -1,0 +1,10 @@
+syntax = "proto3";
+package protos;
+option go_package = "github.com/xgnx12/protos";
+
+import "google/protobuf/descriptor.proto";
+
+// 扩展 MethodOptions 来定义自定义选项 http_method
+extend google.protobuf.MethodOptions {
+  string http_method = 50001;
+}

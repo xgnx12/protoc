@@ -1,0 +1,15 @@
+syntax = "proto3";
+package echo;
+option go_package = "github.com/myuser/myrepo/pkg/example";
+
+import "echo/hello_msg.proto";
+import "http_options.proto";
+
+service ExampleService {
+    rpc SayHello (HelloRequest) returns (HelloResponse) {
+        option(protos.http_method) = "GET";
+    };
+    rpc CreateHello (HelloRequest) returns (HelloResponse) {
+        option(protos.http_method) = "POSt";
+    };
+}

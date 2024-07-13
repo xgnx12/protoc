@@ -1,0 +1,11 @@
+syntax = "proto3";
+option go_package = "github.com/myuser/myrepo/pkg/example";
+package echo;
+
+message HelloRequest {
+    optional string name = 1;
+}
+
+message HelloResponse {
+    optional string message = 1;
+}
