@@ -1,6 +1,6 @@
 # 定义路径
 PROTOC_GEN_ECHO_PATH := .\cmd\gen-echo\protoc-gen-echo
-PROTOC_GEN_ECHO_SRC_PATH := .\cmd\gen-echo\main.go
+PROTOC_GEN_ECHO_SRC_PATH := .\cmd\protoc-gen-echo\main.go
 
 PROTOC_GEN_GO_PATH := .\protoc-gen-go.exe
 OUT_DIR := .\out
