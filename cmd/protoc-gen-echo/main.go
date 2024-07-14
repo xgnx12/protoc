@@ -65,10 +65,13 @@ func generateHandlerRouter(g *protogen.GeneratedFile, service *protogen.Service)
 	for _, method := range service.Methods {
 		httpMethod := proto.GetExtension(method.Desc.Options(), protos.E_HttpMethod).(string)
 		if httpMethod == "" {
-			logError("must specify http_method option for rpb method")
+			httpMethod = "post"
 		}
 		if !isValidHttpMethod(httpMethod) {
 			logError(fmt.Sprintf("`%s` is no valid http method", httpMethod))
+		}
+		if !isValidaMethod(method.GoName) {
+			logError(fmt.Sprintf("`%s` must be start withs get, create, update or delete", method.GoName))
 		}
 		g.P(`e.`, strings.ToUpper(httpMethod), `("/`, camelToSnake(service.GoName), "/", camelToSnake(method.GoName), `", func(c echo.Context) error {`)
 		g.P("    req := new(", method.Input.GoIdent, ")")
@@ -92,8 +95,28 @@ func isValidHttpMethod(method string) bool {
 		}
 	}
 	return false
-
 }
+
+func isValidaMethod(methodName string) bool {
+	parts := strings.Split(camelToSnake(methodName), "_")
+	prefix := strings.ToLower(parts[0])
+	for _, m := range []string{"get", "create", "update", "delete"} {
+		if prefix == m {
+			return true
+		}
+	}
+	return false
+}
+
+func checkPrefix(s string, prefixes []string) bool {
+	for _, prefix := range prefixes {
+		if strings.HasPrefix(s, prefix) {
+			return true
+		}
+	}
+	return false
+}
+
 func logError(err string) {
 	log.SetOutput(os.Stderr)
 	log.Println(err)
